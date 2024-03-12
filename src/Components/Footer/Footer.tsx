@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { theme } from '../../Theme/theme';
 
 const StyledFooter = styled.footer`
   display: flex;
@@ -11,7 +10,7 @@ const StyledFooter = styled.footer`
   padding: 2rem 0;
 
   p {
-    font-size: ${theme.size.md};
+    font-size: ${({ theme }) => theme.size.md};
   }
 `;
 
@@ -19,7 +18,7 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: ${theme.size.md};
+  gap: ${({ theme }) => theme.size.md};
 `;
 
 const Footer = () => {

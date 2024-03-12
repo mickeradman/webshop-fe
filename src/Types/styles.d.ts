@@ -2,10 +2,15 @@ export type Theme = {
   color: {
     bgPrimary: string;
     bgSecondary: string;
+    borderPrimary: string;
     buttonBg: string;
+    productCardBg: string;
     headerFooterBg: string;
+    iconHoverPrimary: string;
+    navbarBg: string;
     navLinkActive: string;
     navLinkHover: string;
+    navLinkInactive: string;
     standardDelimiter: string;
     textPrimary: string;
     textSecondary: string;

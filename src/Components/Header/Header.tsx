@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 type StyledHeaderProps = {
   $isLightMode: boolean;
@@ -17,39 +20,69 @@ const StyledHeader = styled.header<StyledHeaderProps>`
     margin: 0;
     color: ${({ theme }) => theme.color.textPrimary};
     padding: 1rem 0 0 1rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
-  .options-wrapper {
+  .upper-right-options__wrapper {
+    display: flex;
     grid-row: 1;
     grid-column: 3;
     justify-self: flex-end;
-    padding: 1rem 1rem 0 0;
+    padding: 1rem 0 0 0;
+    gap: 1rem;
 
-    :hover {
+    .upper-right-options__icon-container:hover {
       cursor: pointer;
     }
 
-    .change-theme-icon {
-      color: ${(props) => (props.$isLightMode ? '#000' : '#FFF')};
+    .upper-right-options__icon {
+      color: ${({ theme }) => theme.color.textPrimary};
+
+      &:hover {
+        color: ${({ theme }) => theme.color.iconHoverPrimary};
+      }
     }
   }
 `;
 
-type Props = {
+type HeaderProps = {
   isLightMode: boolean;
-  onClick: () => void;
+  onClickThemeChange: () => void;
+  onClickCart: () => void;
 };
 
-const Header = (props: Props) => {
+const Header = (props: HeaderProps) => {
   return (
     <StyledHeader $isLightMode={props.isLightMode}>
       <h1>LE BOUTIQUE</h1>
-      <section className='options-wrapper'>
-        <LightModeOutlinedIcon
-          className='change-theme-icon'
-          onClick={() => props.onClick()}
-        />
+      <section className='upper-right-options__wrapper'>
+        <Tooltip title={'Varukorgen'} placement='bottom' arrow={true}>
+          <div className='upper-right-options__icon-container'>
+            <ShoppingCartOutlinedIcon
+              className='upper-right-options__icon cart-icon'
+              onClick={() => props.onClickCart()}
+            />
+          </div>
+        </Tooltip>
+        <Tooltip
+          title={`Byt till ${props.isLightMode ? 'mörkt tema' : 'ljust tema'}`}
+          placement='bottom-start'
+          arrow={true}
+        >
+          <div className='upper-right-options__icon-container'>
+            {props.isLightMode ? (
+              <LightModeOutlinedIcon
+                className='upper-right-options__icon'
+                onClick={() => props.onClickThemeChange()}
+              />
+            ) : (
+              <DarkModeOutlinedIcon
+                className='upper-right-options__icon'
+                onClick={() => props.onClickThemeChange()}
+              />
+            )}
+          </div>
+        </Tooltip>
       </section>
     </StyledHeader>
   );

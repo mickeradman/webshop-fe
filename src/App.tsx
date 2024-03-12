@@ -3,9 +3,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 
+import About from './Views/About/About';
+import GlobalStyle from './Components/GlobalStyle/GlobalStyle';
 import Header from './Components/Header/Header';
+import LandingPage from './Components/LandingPage/LandingPage';
 import Navbar from './Components/Navbar/Navbar';
-import LandingPage from './Views/LandingPage/LandingPage';
+import News from './Views/News/News';
+import Products from './Views/Products/Products';
 import theme from './Theme/theme';
 
 const App: React.FC = () => {
@@ -25,7 +29,11 @@ const App: React.FC = () => {
       path: '/',
       element: (
         <>
-          <Header isLightMode={isLightMode} onClick={() => switchTheme()} />
+          <Header
+            isLightMode={isLightMode}
+            onClickThemeChange={() => switchTheme()}
+            onClickCart={() => {}}
+          />
           <Navbar />
           <LandingPage />
         </>
@@ -34,23 +42,27 @@ const App: React.FC = () => {
         {
           index: true,
           path: 'nyheter',
-          element: <h1>Nyheter</h1>,
+          element: <News />,
         },
         {
           path: 'produkter',
-          element: <h1>Produkter</h1>,
+          element: <Products />,
         },
         {
           path: 'om-oss',
-          element: <h1>Om oss</h1>,
+          element: <About />,
         },
       ],
+    },
+    {
+      path: '*',
     },
   ]);
 
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme[isLightMode ? 'light' : 'dark']}>
+        <GlobalStyle />
         <RouterProvider router={router} />
       </ThemeProvider>
     </React.StrictMode>
