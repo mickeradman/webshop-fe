@@ -15,9 +15,27 @@ const StyledLandingPage = styled.main`
 
 function LandingPage() {
   const navigate = useNavigate();
+  const navPath = '/nyheter';
 
+  // Navigera till senast besökta fliken om det inte gått mer än 12 timmar - annars navigeras man till Nyheter.
   useEffect(() => {
-    navigate('nyheter');
+    const lastPageDataString = localStorage.getItem('lastPageData');
+    const lastPageData = lastPageDataString
+      ? JSON.parse(lastPageDataString)
+      : null;
+
+    if (
+      lastPageData &&
+      Date.now() - parseInt(lastPageData[1]) < 60 * 60 * 12 * 1000
+    ) {
+      navigate(lastPageData[0]);
+    } else {
+      localStorage.setItem(
+        'lastPageData',
+        JSON.stringify([navPath, Date.now().toString()])
+      );
+      navigate(navPath);
+    }
   }, []);
 
   return (

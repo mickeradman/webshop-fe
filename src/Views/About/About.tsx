@@ -5,18 +5,22 @@ const StyledGridContainer = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 1px solid orange;
   color: ${({ theme }) => theme.color.textPrimary};
 
-  h1 {
+  h2 {
     margin: 0 1rem 1rem;
   }
 `;
 
 const About = () => {
+  localStorage.setItem(
+    'lastPageData',
+    JSON.stringify([location.pathname, Date.now().toString()])
+  );
+
   return (
     <StyledGridContainer>
-      <h1>About</h1>
+      <h2>About</h2>
     </StyledGridContainer>
   );
 };

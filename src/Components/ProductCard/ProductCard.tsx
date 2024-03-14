@@ -47,8 +47,6 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ products }: ProductCardProps) => {
-  console.log(products);
-
   return (
     <>
       {products.map((product) => (

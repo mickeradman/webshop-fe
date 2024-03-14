@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { RootState, store } from '../../GlobalState/store';
+import { RootState } from '../../GlobalState/store';
 import { useAppDispatch } from '../../GlobalState/useAppDispatch';
 import { fetchProducts } from '../../GlobalState/Product/ProductSlice';
 import ProductCard from '../../Components/ProductCard/ProductCard';
@@ -47,15 +47,28 @@ const Products = () => {
     (state: RootState) => state.products
   );
 
+  localStorage.setItem(
+    'lastPageData',
+    JSON.stringify([location.pathname, Date.now().toString()])
+  );
+
   useEffect(() => {
     const lastFetchTime = localStorage.getItem('lastFetchTime');
+
+    lastFetchTime
+      ? console.log(
+          'Last fetch time:',
+          new Date(parseInt(lastFetchTime)).toLocaleString()
+        )
+      : console.log('Det är tomt i localStorage...');
+
     const shouldFetchFromDatabase =
       !lastFetchTime || Date.now() - parseInt(lastFetchTime) > 30 * 60 * 1000;
 
-    if (shouldFetchFromDatabase && products.length === 0) {
+    if (shouldFetchFromDatabase) {
+      console.log('Fetching products from database...');
       dispatch(fetchProducts());
       localStorage.setItem('lastFetchTime', Date.now().toString());
-      console.log(store.getState());
     }
   }, [dispatch, products]);
 

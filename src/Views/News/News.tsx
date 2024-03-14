@@ -5,10 +5,9 @@ const StyledTextContainer = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 1px solid orange;
   color: ${({ theme }) => theme.color.textPrimary};
 
-  h1 {
+  h2 {
     margin: 0 1rem 1rem;
   }
 
@@ -18,9 +17,14 @@ const StyledTextContainer = styled.section`
 `;
 
 const News = () => {
+  localStorage.setItem(
+    'lastPageData',
+    JSON.stringify([location.pathname, Date.now().toString()])
+  );
+
   return (
     <StyledTextContainer>
-      <h1>Våra senaste nyheter!</h1>
+      <h2>Våra senaste nyheter!</h2>
       <p>Här är massa nyheter. Blablablabla.</p>
     </StyledTextContainer>
   );
