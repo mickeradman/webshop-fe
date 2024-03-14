@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { RootState } from '../../GlobalState/store';
+import { RootState, store } from '../../GlobalState/store';
 import { useAppDispatch } from '../../GlobalState/useAppDispatch';
-import { fetchProducts } from '../../GlobalState/Product/ProductThunk';
+import { fetchProducts } from '../../GlobalState/Product/ProductSlice';
 import ProductCard from '../../Components/ProductCard/ProductCard';
-import { Product } from '../../Types/types';
 
 const StyledTextContainer = styled.section`
   display: flex;
@@ -17,7 +16,7 @@ const StyledTextContainer = styled.section`
     theme.color.standardDelimiter}; */
   color: ${({ theme }) => theme.color.textPrimary};
 
-  h1 {
+  h2 {
     margin: 0 1rem 1rem;
   }
 
@@ -27,7 +26,7 @@ const StyledTextContainer = styled.section`
   }
 `;
 
-const StyledProductsContainer = styled.section`
+const StyledProductsContainer = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   margin: 2rem 0;
@@ -56,13 +55,14 @@ const Products = () => {
     if (shouldFetchFromDatabase && products.length === 0) {
       dispatch(fetchProducts());
       localStorage.setItem('lastFetchTime', Date.now().toString());
+      console.log(store.getState());
     }
   }, [dispatch, products]);
 
   return (
     <>
       <StyledTextContainer>
-        <h1>Produkter</h1>
+        <h2>Produkter</h2>
         <p>
           Om inte annat anges finns alla listade varor i lager. Vi kommer i
           sinom tid lägga till en ikon för lagerstatus.
@@ -72,9 +72,9 @@ const Products = () => {
         <>
           {loading && <StyledLoadingOrError>Loading...</StyledLoadingOrError>}
           {error && <StyledLoadingOrError>{error}</StyledLoadingOrError>}
-          {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
+          {!loading && !error && products.length > 0 && (
+            <ProductCard products={products} />
+          )}
         </>
       </StyledProductsContainer>
     </>

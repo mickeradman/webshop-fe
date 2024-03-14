@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 import { Product } from '../../Types/types';
+import { IMG_EXTENSION } from '../../Utils/constants';
 
-const ProductCardContainer = styled.article`
+const StyledListItem = styled.li`
   height: 330px;
   display: flex;
   align-items: center;
@@ -20,17 +21,49 @@ const ProductCardContainer = styled.article`
   }
 `;
 
+const StyledListTitle = styled.h3`
+  margin: 0.5rem 0;
+  padding: 0 1rem;
+  color: ${({ theme }) => theme.color.textPrimary};
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.color.borderPrimary};
+`;
+
+const StyledListDescription = styled.p`
+  margin: 0;
+  padding: 0 1rem;
+  color: ${({ theme }) => theme.color.textPrimary};
+`;
+
 type ProductCardProps = {
-  product: Product;
+  products: Product[];
 };
 
-const ProductCard = (props: ProductCardProps) => {
-  const { productName, description, price, stockStatus } = props.product;
+const ProductCard = ({ products }: ProductCardProps) => {
+  console.log(products);
 
   return (
-    <ProductCardContainer>
-      <h3>{productName}</h3>
-    </ProductCardContainer>
+    <>
+      {products.map((product) => (
+        <StyledListItem key={product._id}>
+          <StyledListTitle>{product.productName}</StyledListTitle>
+          <StyledImage
+            src={product.imgPath + IMG_EXTENSION}
+            alt={product.productName}
+          />
+          <StyledListDescription>
+            {product.description ? product.description : 'Ingen beskrivning'}
+          </StyledListDescription>
+        </StyledListItem>
+      ))}
+    </>
   );
 };
 

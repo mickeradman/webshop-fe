@@ -15,7 +15,12 @@ const initialState: ProductState = {
   error: null,
 };
 
-// Definiera en asynkron thunk för att hämta produkter
+const persistedState = localStorage.getItem('reduxState');
+
+const initialProductState: ProductState = persistedState
+  ? JSON.parse(persistedState)
+  : initialState;
+
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
@@ -25,10 +30,8 @@ export const fetchProducts = createAsyncThunk(
 
 const productSlice = createSlice({
   name: 'products',
-  initialState,
-  reducers: {
-    // Inga manuella reducer-actions för start och fel behövs längre
-  },
+  initialState: initialProductState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
@@ -42,7 +45,8 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? 'Misslyckades att hämta produkter.';
+        state.error =
+          action.error.message ?? 'Misslyckades att hämta produkter.';
       });
   },
 });
