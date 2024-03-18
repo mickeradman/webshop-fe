@@ -15,7 +15,7 @@ const initialState: ProductState = {
   error: null,
 };
 
-const persistedState = localStorage.getItem('reduxState');
+const persistedState = localStorage.getItem('productsState');
 
 const initialProductState: ProductState = persistedState
   ? JSON.parse(persistedState)
@@ -24,7 +24,7 @@ const initialProductState: ProductState = persistedState
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
-    return fetchProductsFromBackend();
+    return await fetchProductsFromBackend();
   }
 );
 

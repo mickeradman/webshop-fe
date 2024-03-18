@@ -13,10 +13,8 @@ const StyledGridContainer = styled.section`
 `;
 
 const About = () => {
-  localStorage.setItem(
-    'lastPageData',
-    JSON.stringify([location.pathname, Date.now().toString()])
-  );
+  localStorage.setItem('lastPageData', location.pathname);
+  localStorage.setItem('lastInteractionData', Date.now().toString());
 
   return (
     <StyledGridContainer>

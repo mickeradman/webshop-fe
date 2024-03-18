@@ -17,10 +17,8 @@ const StyledTextContainer = styled.section`
 `;
 
 const News = () => {
-  localStorage.setItem(
-    'lastPageData',
-    JSON.stringify([location.pathname, Date.now().toString()])
-  );
+  localStorage.setItem('lastPageData', location.pathname);
+  localStorage.setItem('lastInteractionData', Date.now().toString());
 
   return (
     <StyledTextContainer>

@@ -6,7 +6,7 @@ import { saveStateListener } from './localStorageHelper';
 
 export const store = configureStore({
   reducer: {
-    shopItem: cartReducer,
+    cart: cartReducer,
     products: productReducer,
   },
 });

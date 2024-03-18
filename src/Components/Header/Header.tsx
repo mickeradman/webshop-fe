@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../../GlobalState/store';
 import styled from 'styled-components';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
@@ -23,26 +25,51 @@ const StyledHeader = styled.header<StyledHeaderProps>`
     font-size: 1.2rem;
   }
 
-  .upper-right-options__wrapper {
-    display: flex;
-    grid-row: 1;
-    grid-column: 3;
-    justify-self: flex-end;
-    padding: 1rem 0 0 0;
-    gap: 1rem;
+  .upper-right-options__icon {
+    color: ${({ theme }) => theme.color.textPrimary};
 
-    .upper-right-options__icon-container:hover {
-      cursor: pointer;
-    }
-
-    .upper-right-options__icon {
-      color: ${({ theme }) => theme.color.textPrimary};
-
-      &:hover {
-        color: ${({ theme }) => theme.color.iconHoverPrimary};
-      }
+    &:hover {
+      color: ${({ theme }) => theme.color.iconHoverPrimary};
     }
   }
+`;
+
+const StyledOptionsContainer = styled.section`
+  display: flex;
+  grid-row: 1;
+  grid-column: 3;
+  justify-self: flex-end;
+  padding: 1rem 0 0 0;
+  gap: 1rem;
+`;
+
+const StyledOptionsIconContainer = styled.div`
+  position: relative;
+
+  .shopping-cart {
+    position: relative;
+  }
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const StyledArticleCountChip = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0.8rem;
+  left: 0.8rem;
+  color: ${({ theme }) => theme.color.textPrimary};
+  background-color: ${({ theme }) => theme.color.cartCountChip};
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  padding: 0.15rem;
+  font-weight: bold;
 `;
 
 type HeaderProps = {
@@ -52,24 +79,33 @@ type HeaderProps = {
 };
 
 const Header = (props: HeaderProps) => {
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+
+  const articleCount = cartItems.reduce((acc, item) => {
+    return acc + item.amount;
+  }, 0);
+
   return (
     <StyledHeader $isLightMode={props.isLightMode}>
       <h1>LE BOUTIQUE</h1>
-      <section className='upper-right-options__wrapper'>
+      <StyledOptionsContainer>
         <Tooltip title={'Varukorgen'} placement='bottom' arrow={true}>
-          <div className='upper-right-options__icon-container'>
+          <StyledOptionsIconContainer className='shopping-cart'>
+            {articleCount ? (
+              <StyledArticleCountChip>{articleCount}</StyledArticleCountChip>
+            ) : null}
             <ShoppingCartOutlinedIcon
               className='upper-right-options__icon cart-icon'
               onClick={() => props.onClickCart()}
             />
-          </div>
+          </StyledOptionsIconContainer>
         </Tooltip>
         <Tooltip
           title={`Byt till ${props.isLightMode ? 'mörkt tema' : 'ljust tema'}`}
           placement='bottom-start'
           arrow={true}
         >
-          <div className='upper-right-options__icon-container'>
+          <StyledOptionsIconContainer>
             {props.isLightMode ? (
               <LightModeOutlinedIcon
                 className='upper-right-options__icon'
@@ -81,9 +117,9 @@ const Header = (props: HeaderProps) => {
                 onClick={() => props.onClickThemeChange()}
               />
             )}
-          </div>
+          </StyledOptionsIconContainer>
         </Tooltip>
-      </section>
+      </StyledOptionsContainer>
     </StyledHeader>
   );
 };

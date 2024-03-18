@@ -4,13 +4,14 @@ export type Theme = {
     bgSecondary: string;
     borderPrimary: string;
     buttonBg: string;
-    productCardBg: string;
+    cartCountChip: string;
     headerFooterBg: string;
     iconHoverPrimary: string;
     navbarBg: string;
     navLinkActive: string;
     navLinkHover: string;
     navLinkInactive: string;
+    productCardBg: string;
     standardDelimiter: string;
     textPrimary: string;
     textSecondary: string;

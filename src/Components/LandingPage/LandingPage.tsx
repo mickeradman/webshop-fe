@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
+import { isValidPath } from '../../Utils/helperFunctions';
+
 const StyledLandingPage = styled.main`
   display: flex;
   flex-direction: column;
@@ -19,21 +21,20 @@ function LandingPage() {
 
   // Navigera till senast besökta fliken om det inte gått mer än 12 timmar - annars navigeras man till Nyheter.
   useEffect(() => {
-    const lastPageDataString = localStorage.getItem('lastPageData');
-    const lastPageData = lastPageDataString
-      ? JSON.parse(lastPageDataString)
-      : null;
+    const lastPageData = localStorage.getItem('lastPageData');
+    const lastInteractionData = localStorage.getItem('lastInteractionData');
 
     if (
       lastPageData &&
-      Date.now() - parseInt(lastPageData[1]) < 60 * 60 * 12 * 1000
+      isValidPath(lastPageData) &&
+      lastInteractionData &&
+      Date.now() - parseInt(lastInteractionData) < 60 * 60 * 12 * 1000
     ) {
-      navigate(lastPageData[0]);
+      localStorage.setItem('lastInteractionData', Date.now().toString());
+      navigate(lastPageData);
     } else {
-      localStorage.setItem(
-        'lastPageData',
-        JSON.stringify([navPath, Date.now().toString()])
-      );
+      localStorage.setItem('lastPageData', navPath);
+      localStorage.setItem('lastInteractionData', Date.now().toString());
       navigate(navPath);
     }
   }, []);

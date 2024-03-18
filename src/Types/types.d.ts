@@ -7,3 +7,9 @@ export type Product = {
   imgPath: string;
   category: string;
 };
+
+export enum ValidPaths {
+  Nyheter = '/nyheter',
+  Produkt = '/produkter',
+  Om = '/om-oss',
+}

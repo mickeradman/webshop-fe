@@ -12,8 +12,6 @@ const StyledTextContainer = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* border-bottom: 1px solid ${({ theme }) =>
-    theme.color.standardDelimiter}; */
   color: ${({ theme }) => theme.color.textPrimary};
 
   h2 {
@@ -28,7 +26,8 @@ const StyledTextContainer = styled.section`
 
 const StyledProductsContainer = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  padding: 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   margin: 2rem 0;
   gap: 2.5rem;
 `;
@@ -47,17 +46,15 @@ const Products = () => {
     (state: RootState) => state.products
   );
 
-  localStorage.setItem(
-    'lastPageData',
-    JSON.stringify([location.pathname, Date.now().toString()])
-  );
+  localStorage.setItem('lastPageData', location.pathname);
+  localStorage.setItem('lastInteractionData', Date.now().toString());
 
   useEffect(() => {
     const lastFetchTime = localStorage.getItem('lastFetchTime');
 
     lastFetchTime
       ? console.log(
-          'Last fetch time:',
+          'Last db fetch time:',
           new Date(parseInt(lastFetchTime)).toLocaleString()
         )
       : console.log('Det är tomt i localStorage...');

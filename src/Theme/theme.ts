@@ -6,6 +6,7 @@ const lightMode: Theme = {
     bgSecondary: '#FFF6F6',
     borderPrimary: '#1B172E',
     buttonBg: '#CBB3BA',
+    cartCountChip: '#6DD76D',
     headerFooterBg: '#FFFFFF',
     iconHoverPrimary: '#D59100',
     navbarBg: '#FFFFFF',
@@ -22,9 +23,10 @@ const lightMode: Theme = {
 const darkMode: Theme = {
   color: {
     bgPrimary: '#181818',
-    bgSecondary: '#303030',
-    borderPrimary: '#9CA6AE',
+    bgSecondary: '#242424',
+    borderPrimary: '#4B535A',
     buttonBg: '#000000',
+    cartCountChip: '#008000',
     headerFooterBg: '#181818',
     iconHoverPrimary: '#EBD322',
     navbarBg: '#251F26',
