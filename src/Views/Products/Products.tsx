@@ -13,21 +13,17 @@ const StyledTextContainer = styled.section`
   align-items: center;
   flex-direction: column;
   color: ${({ theme }) => theme.color.textPrimary};
+`;
 
-  h2 {
-    margin: 0 1rem 1rem;
-  }
-
-  p {
-    margin-top: 0.2rem;
-    padding: 0 1rem;
-  }
+const StyledProductsText = styled.h3`
+  margin: 0 1rem 1rem;
+  padding: 0 1rem;
 `;
 
 const StyledProductsContainer = styled.ul`
   display: grid;
   padding: 0;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
   margin: 2rem 0;
   gap: 2.5rem;
 `;
@@ -72,11 +68,10 @@ const Products = () => {
   return (
     <>
       <StyledTextContainer>
-        <h2>Produkter</h2>
-        <p>
+        <StyledProductsText>
           Om inte annat anges finns alla listade varor i lager. Vi kommer i
-          sinom tid lägga till en ikon för lagerstatus.
-        </p>
+          sinom tid lägga till en ikon för lagerstatus/saldo.
+        </StyledProductsText>
       </StyledTextContainer>
       <StyledProductsContainer>
         <>

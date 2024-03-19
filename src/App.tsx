@@ -10,19 +10,29 @@ import LandingPage from './Components/LandingPage/LandingPage';
 import Navbar from './Components/Navbar/Navbar';
 import News from './Views/News/News';
 import Products from './Views/Products/Products';
+import ShoppingCart from './Views/ShoppingCart/ShoppingCart';
 import theme from './Theme/theme';
 
 const App: React.FC = () => {
+  const [showShoppingCart, setShowShoppingCart] = useState(false);
   const [isLightMode, setIsLightMode] = useState(
     localStorage.getItem('theme') === 'light' || null ? true : false
   );
 
-  useEffect(() => {}, [isLightMode]);
+  useEffect(() => {
+    showShoppingCart
+      ? (document.body.style.overflow = 'hidden')
+      : (document.body.style.overflow = 'auto');
+  }, [isLightMode, showShoppingCart]);
 
   function switchTheme() {
     localStorage.setItem('theme', isLightMode ? 'dark' : 'light');
     setIsLightMode(!isLightMode);
   }
+
+  const onClickCart = () => {
+    setShowShoppingCart(!showShoppingCart);
+  };
 
   const router = createBrowserRouter([
     {
@@ -32,10 +42,16 @@ const App: React.FC = () => {
           <Header
             isLightMode={isLightMode}
             onClickThemeChange={() => switchTheme()}
-            onClickCart={() => {}}
+            onClickCart={() => onClickCart()}
           />
           <Navbar />
           <LandingPage />
+          {showShoppingCart ? (
+            <ShoppingCart
+              isOpen={showShoppingCart}
+              onClose={() => setShowShoppingCart(false)}
+            />
+          ) : null}
         </>
       ),
       children: [

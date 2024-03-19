@@ -12,6 +12,7 @@ export type Theme = {
     navLinkHover: string;
     navLinkInactive: string;
     productCardBg: string;
+    productCardBgOnHover: string;
     standardDelimiter: string;
     textPrimary: string;
     textSecondary: string;

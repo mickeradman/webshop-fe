@@ -14,6 +14,7 @@ const lightMode: Theme = {
     navLinkHover: '#9E9E9E',
     navLinkInactive: '#B6B6B6',
     productCardBg: '#F6F6F6',
+    productCardBgOnHover: '#E8E8E8',
     standardDelimiter: '#5D5D5D',
     textPrimary: '#000000 ',
     textSecondary: '#FFFFFF',
@@ -23,7 +24,7 @@ const lightMode: Theme = {
 const darkMode: Theme = {
   color: {
     bgPrimary: '#181818',
-    bgSecondary: '#242424',
+    bgSecondary: '#3C3C3C',
     borderPrimary: '#4B535A',
     buttonBg: '#000000',
     cartCountChip: '#008000',
@@ -35,6 +36,7 @@ const darkMode: Theme = {
     // navLinkHover: '#003983',
     navLinkInactive: '#B6B6B6',
     productCardBg: '#181818',
+    productCardBgOnHover: '#242424',
     standardDelimiter: '#5D5D5D',
     textPrimary: '#FFFFFF',
     textSecondary: '#000000',

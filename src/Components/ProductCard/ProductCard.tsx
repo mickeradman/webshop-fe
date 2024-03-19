@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import AddBoxOutlined from '@mui/icons-material/AddBoxOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 import { useAppDispatch } from '../../GlobalState/useAppDispatch';
 import { addProduct, removeProduct } from '../../GlobalState/Cart/CartSlice';
@@ -20,14 +21,14 @@ const StyledListItem = styled.li`
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.color.bgSecondary};
+    background-color: ${({ theme }) => theme.color.productCardBgOnHover};
     transform: scale(1.02);
   }
 `;
 
 const StyledListImage = styled.img`
   width: 100%;
-  height: 150px;
+  height: 16rem;
   object-fit: contain;
   padding: 0.5rem 0;
   border-bottom: 1px solid ${({ theme }) => theme.color.borderPrimary};
@@ -49,7 +50,7 @@ const StyledTitlePriceContainer = styled.div`
   margin-top: 0.5rem;
 `;
 
-const StyledListTitle = styled.h3`
+const StyledListTitle = styled.p`
   align-self: flex-start;
   font-weight: normal;
   margin: 0.25rem 0;
@@ -70,7 +71,7 @@ const StyledIconContainer = styled.div`
   margin-right: 0.3rem;
 `;
 
-const StyledMaterialIcon = styled(AddBoxOutlined)`
+const StyledAddIcon = styled(AddBoxOutlined)`
   width: 2rem !important;
   height: 2rem !important;
 
@@ -111,7 +112,18 @@ const ProductCard = ({ products }: ProductCardProps) => {
               </StyledListPrice>
             </StyledTitlePriceContainer>
             <StyledIconContainer>
-              <StyledMaterialIcon onClick={() => dispatch(addProduct({id: product._id, productName: product.productName}))} />
+              <Tooltip title={'Lägg till produkt i varukorgen'} placement='bottom' arrow={true}>
+                <StyledAddIcon
+                  onClick={() =>
+                    dispatch(
+                      addProduct({
+                        id: product._id,
+                        productName: product.productName,
+                      })
+                    )
+                  }
+                />
+              </Tooltip>
             </StyledIconContainer>
           </StyledBottomContainer>
         </StyledListItem>
