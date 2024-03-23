@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-type CartProps = {
+export type CartProps = {
   id: string;
   productName: string;
   amount: number;
@@ -15,20 +15,13 @@ const shoppingCartSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action) => {
-      const { id, productName } = action.payload;
-      const existingIndex = state.cartItems.findIndex((item) => item.id === id);
+      const { id, productName, description, price, stockStatus } =
+        action.payload;
+      const existingItem = state.cartItems.find((item) => item.id === id);
 
-      if (existingIndex !== -1) {
-        const updatedCartItems = state.cartItems.map((item) => {
-          if (item.id === id) {
-            return { ...item, amount: item.amount + 1 };
-          }
-
-          return item;
-        });
-
-        console.log(
-          'Lägger till en till av den här, för den finns redan i kundvagnen.'
+      if (existingItem) {
+        const updatedCartItems = state.cartItems.map((item) =>
+          item.id === id ? { ...item, amount: item.amount + 1 } : item
         );
 
         return {
@@ -39,13 +32,11 @@ const shoppingCartSlice = createSlice({
         const newItem = {
           id,
           productName,
+          description,
+          price,
+          stockStatus,
           amount: 1,
         };
-
-        console.log(
-          'Uppdaterad kundvagn:',
-          JSON.parse(JSON.stringify([...state.cartItems, newItem]))
-        );
 
         return {
           ...state,
@@ -54,9 +45,22 @@ const shoppingCartSlice = createSlice({
       }
     },
     removeProduct: (state, action) => {
-      state.cartItems = state.cartItems.filter(
-        (item) => item.id !== action.payload
+      const { id } = action.payload;
+      const updatedCartItems = state.cartItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, amount: Math.max(0, item.amount - 1) };
+        }
+        return item;
+      });
+
+      const filteredCartItems = updatedCartItems.filter(
+        (item) => item.amount > 0
       );
+
+      return {
+        ...state,
+        cartItems: filteredCartItems,
+      };
     },
   },
 });

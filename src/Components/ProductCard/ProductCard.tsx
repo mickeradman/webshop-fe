@@ -1,10 +1,13 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../../GlobalState/store';
 import styled from 'styled-components';
-import AddBoxOutlined from '@mui/icons-material/AddBoxOutlined';
-import Tooltip from '@mui/material/Tooltip';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
 import { useAppDispatch } from '../../GlobalState/useAppDispatch';
 import { addProduct, removeProduct } from '../../GlobalState/Cart/CartSlice';
 import { Product } from '../../Types/types';
+import { CartProps } from '../../GlobalState/Cart/CartSlice';
 import { IMG_EXTENSION } from '../../Utils/constants';
 import { CURRENCY } from '../../Utils/constants';
 
@@ -17,12 +20,15 @@ const StyledListItem = styled.li`
   border-radius: 0.3rem;
   color: ${({ theme }) => theme.color.textPrimary};
   background-color: ${({ theme }) => theme.color.productCardBg};
-  transition: transform 300ms;
 
   &:hover {
     cursor: pointer;
     background-color: ${({ theme }) => theme.color.productCardBgOnHover};
     transform: scale(1.02);
+
+    .visible-on-hover {
+      visibility: visible !important;
+    }
   }
 `;
 
@@ -67,25 +73,68 @@ const StyledListPrice = styled.p`
 const StyledIconContainer = styled.div`
   display: flex;
   align-self: center;
-  color: green;
   margin-right: 0.3rem;
-`;
+  border: 2px solid ${({ theme }) => theme.color.borderPrimary};
+  border-radius: 0.3rem;
+  visibility: hidden;
 
-const StyledAddIcon = styled(AddBoxOutlined)`
-  width: 2rem !important;
-  height: 2rem !important;
+  &.visible {
+    visibility: visible;
+  }
 
-  &:hover {
-    cursor: pointer;
-    color: #94fd94;
+  &.no-border {
+    border: none;
+    color: ${({ theme }) => theme.color.negativeRed};
   }
 `;
 
-// const StyledListDescription = styled.p`
-//   margin: 0;
-//   padding: 0 1rem;
-//   color: ${({ theme }) => theme.color.textPrimary};
-// `;
+const StyledRemoveIcon = styled(RemoveRoundedIcon)`
+  width: 2rem !important;
+  height: 2rem !important;
+  color: ${({ theme }) => theme.color.negativeRed};
+
+  &:hover {
+    cursor: pointer;
+    color: ${({ theme }) => theme.color.negativeRedHover};
+  }
+`;
+
+const StyledQuantityBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.color.textPrimary};
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-left: 2px solid ${({ theme }) => theme.color.borderPrimary};
+  border-right: 2px solid ${({ theme }) => theme.color.borderPrimary};
+`;
+
+const StyledQuantity = styled.p`
+  margin: 0;
+  padding: 0 0.5rem;
+`;
+
+const StyledAddIcon = styled(AddRoundedIcon)`
+  width: 2rem !important;
+  height: 2rem !important;
+  color: ${({ theme }) => theme.color.positiveGreen};
+
+  &:hover {
+    cursor: pointer;
+    color: ${({ theme }) => theme.color.positiveGreenHover};
+  }
+`;
+
+const NotInStock = styled.h3`
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  color: ${({ theme }) => theme.color.textPrimary};
+`;
+
+const getAmount = (id: string, cartItems: CartProps[]) => {
+  return cartItems.find((item) => item.id === id)?.amount || 0;
+};
 
 type ProductCardProps = {
   products: Product[];
@@ -93,6 +142,7 @@ type ProductCardProps = {
 
 const ProductCard = ({ products }: ProductCardProps) => {
   const dispatch = useAppDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
 
   return (
     <>
@@ -111,19 +161,46 @@ const ProductCard = ({ products }: ProductCardProps) => {
                   : 'Ej prissatt ännu'}
               </StyledListPrice>
             </StyledTitlePriceContainer>
-            <StyledIconContainer>
-              <Tooltip title={'Lägg till produkt i varukorgen'} placement='bottom' arrow={true}>
-                <StyledAddIcon
-                  onClick={() =>
-                    dispatch(
-                      addProduct({
-                        id: product._id,
-                        productName: product.productName,
-                      })
-                    )
-                  }
-                />
-              </Tooltip>
+            <StyledIconContainer
+              className={`${
+                getAmount(product._id, cartItems) > 0 ? 'visible' : 'hidden'
+              } visible-on-hover ${
+                product.stockStatus === '0' && 'no-border'
+              }`}
+            >
+              {product.stockStatus === '0' ? (
+                <NotInStock>Slut i lager</NotInStock>
+              ) : (
+                <>
+                  <StyledRemoveIcon
+                    onClick={() =>
+                      dispatch(
+                        removeProduct({
+                          id: product._id,
+                        })
+                      )
+                    }
+                  />
+                  <StyledQuantityBox>
+                    <StyledQuantity>
+                      {getAmount(product._id, cartItems)}
+                    </StyledQuantity>
+                  </StyledQuantityBox>
+                  <StyledAddIcon
+                    onClick={() =>
+                      dispatch(
+                        addProduct({
+                          id: product._id,
+                          productName: product.productName,
+                          description: product.description,
+                          price: product.price,
+                          stockStatus: product.stockStatus,
+                        })
+                      )
+                    }
+                  />
+                </>
+              )}
             </StyledIconContainer>
           </StyledBottomContainer>
         </StyledListItem>

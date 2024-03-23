@@ -1,68 +1,66 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../GlobalState/store';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Tooltip from '@mui/material/Tooltip';
 
-type StyledHeaderProps = {
-  $isLightMode: boolean;
-};
-
-const StyledHeader = styled.header<StyledHeaderProps>`
+const HeaderGridContainer = styled.header<{ $isLightMode: boolean }>`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr;
   background-color: ${({ theme }) => theme.color.headerFooterBg};
+`;
 
-  h1 {
-    grid-row: 1 / 3;
-    grid-column: 1 / 3;
-    margin: 0;
-    color: ${({ theme }) => theme.color.textPrimary};
-    padding: 1rem 0 0 1rem;
-    font-size: 1.2rem;
-  }
+const HeaderTitleContainer = styled.section`
+  grid-row: 1 / 2;
+  grid-column: 1 / 3;
+  margin: 1.2rem 0 1.2rem 0;
+  padding: 0;
+`;
 
-  .upper-right-options__icon {
-    color: ${({ theme }) => theme.color.textPrimary};
+const HeaderTitle = styled.h1`
+  width: fit-content;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.color.textPrimary};
 
-    &:hover {
-      color: ${({ theme }) => theme.color.iconHoverPrimary};
-    }
+  &:hover {
+    cursor: pointer;
+    color: ${({ theme }) => theme.color.iconHoverPrimary};
   }
 `;
 
-const StyledOptionsContainer = styled.section`
+const OptionsContainer = styled.section`
   display: flex;
-  grid-row: 1;
-  grid-column: 3;
+  grid-row: 1 / 2;
+  grid-column: 3 / 4;
   justify-self: flex-end;
-  padding: 1rem 0 0 0;
+  padding: 1.2rem 0 1.2rem 0;
   gap: 1rem;
 `;
 
-const StyledOptionsIconContainer = styled.div`
+const OptionsIconContainer = styled.div`
   position: relative;
-
-  .shopping-cart {
-    position: relative;
-  }
+  color: ${({ theme }) => theme.color.textPrimary};
 
   :hover {
     cursor: pointer;
+    color: ${({ theme }) => theme.color.iconHoverPrimary};
   }
 `;
 
-const StyledArticleCountChip = styled.div`
+const ProductCountChip = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 0.8rem;
-  left: 0.8rem;
-  color: ${({ theme }) => theme.color.textPrimary};
+  bottom: 1.1rem;
+  left: 0.9rem;
+  color: ${({ theme }) => theme.color.textPrimary} !important;
   background-color: ${({ theme }) => theme.color.cartCountChip};
   width: 1.1rem;
   height: 1.1rem;
@@ -79,6 +77,7 @@ type HeaderProps = {
 };
 
 const Header = (props: HeaderProps) => {
+  const navigate = useNavigate();
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
 
   const articleCount = cartItems.reduce((acc, item) => {
@@ -86,41 +85,40 @@ const Header = (props: HeaderProps) => {
   }, 0);
 
   return (
-    <StyledHeader $isLightMode={props.isLightMode}>
-      <h1>LE BOUTIQUE</h1>
-      <StyledOptionsContainer>
+    <HeaderGridContainer $isLightMode={props.isLightMode}>
+      <HeaderTitleContainer>
+        <HeaderTitle onClick={() => navigate('/nyheter')}>
+          LE BOUTIQUE
+        </HeaderTitle>
+      </HeaderTitleContainer>
+      <OptionsContainer>
         <Tooltip title={'Varukorgen'} placement='bottom' arrow={true}>
-          <StyledOptionsIconContainer className='shopping-cart'>
+          <OptionsIconContainer onClick={() => props.onClickCart()}>
             {articleCount ? (
-              <StyledArticleCountChip>{articleCount}</StyledArticleCountChip>
+              <ProductCountChip>{articleCount}</ProductCountChip>
             ) : null}
-            <ShoppingCartOutlinedIcon
-              className='upper-right-options__icon cart-icon'
-              onClick={() => props.onClickCart()}
-            />
-          </StyledOptionsIconContainer>
+            <ShoppingCartOutlinedIcon />
+          </OptionsIconContainer>
         </Tooltip>
         <Tooltip
           title={`Byt till ${props.isLightMode ? 'mörkt tema' : 'ljust tema'}`}
           placement='bottom-start'
           arrow={true}
         >
-          <StyledOptionsIconContainer>
+          <OptionsIconContainer>
             {props.isLightMode ? (
               <LightModeOutlinedIcon
-                className='upper-right-options__icon'
                 onClick={() => props.onClickThemeChange()}
               />
             ) : (
               <DarkModeOutlinedIcon
-                className='upper-right-options__icon'
                 onClick={() => props.onClickThemeChange()}
               />
             )}
-          </StyledOptionsIconContainer>
+          </OptionsIconContainer>
         </Tooltip>
-      </StyledOptionsContainer>
-    </StyledHeader>
+      </OptionsContainer>
+    </HeaderGridContainer>
   );
 };
 

@@ -25,7 +25,7 @@ const StyledProductsContainer = styled.ul`
   padding: 0;
   grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
   margin: 2rem 0;
-  gap: 2.5rem;
+  gap: 2rem;
 `;
 
 const StyledLoadingOrError = styled.div`
@@ -50,16 +50,17 @@ const Products = () => {
 
     lastFetchTime
       ? console.log(
-          'Last db fetch time:',
+          'Hämtade sist från databasen:',
           new Date(parseInt(lastFetchTime)).toLocaleString()
         )
       : console.log('Det är tomt i localStorage...');
 
     const shouldFetchFromDatabase =
-      !lastFetchTime || Date.now() - parseInt(lastFetchTime) > 30 * 60 * 1000;
+      !lastFetchTime ||
+      Date.now() - parseInt(lastFetchTime) > 6 * 60 * 60 * 1000;
 
     if (shouldFetchFromDatabase) {
-      console.log('Fetching products from database...');
+      console.log('Hämtar produkter från databasen...');
       dispatch(fetchProducts());
       localStorage.setItem('lastFetchTime', Date.now().toString());
     }

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import About from './Views/About/About';
-import GlobalStyle from './Components/GlobalStyle/GlobalStyle';
+import { GlobalStyle } from './Components/GlobalStyle/GlobalStyle';
 import Header from './Components/Header/Header';
 import LandingPage from './Components/LandingPage/LandingPage';
 import Navbar from './Components/Navbar/Navbar';
@@ -14,6 +14,10 @@ import ShoppingCart from './Views/ShoppingCart/ShoppingCart';
 import theme from './Theme/theme';
 
 const App: React.FC = () => {
+  // const mobileThreshold = 700;
+  // const [isMobile, setIsMobile] = useState(
+  //   window.innerWidth < mobileThreshold ? true : false
+  // );
   const [showShoppingCart, setShowShoppingCart] = useState(false);
   const [isLightMode, setIsLightMode] = useState(
     localStorage.getItem('theme') === 'light' || null ? true : false
