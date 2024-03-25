@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import About from './Views/About/About';
-import { GlobalStyle } from './Components/GlobalStyle/GlobalStyle';
+import { GlobalStyle } from './Styles/styles';
 import Header from './Components/Header/Header';
 import LandingPage from './Components/LandingPage/LandingPage';
 import Navbar from './Components/Navbar/Navbar';

@@ -92,7 +92,7 @@ const Header = (props: HeaderProps) => {
         </HeaderTitle>
       </HeaderTitleContainer>
       <OptionsContainer>
-        <Tooltip title={'Varukorgen'} placement='bottom' arrow={true}>
+        <Tooltip title={'Kundvagnen'} placement='bottom' arrow={true}>
           <OptionsIconContainer onClick={() => props.onClickCart()}>
             {articleCount ? (
               <ProductCountChip>{articleCount}</ProductCountChip>

@@ -4,6 +4,10 @@ export type CartProps = {
   id: string;
   productName: string;
   amount: number;
+  description: string;
+  price: number;
+  stockStatus: string;
+  imgPath: string;
 };
 
 const initialState = {
@@ -15,7 +19,7 @@ const shoppingCartSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action) => {
-      const { id, productName, description, price, stockStatus } =
+      const { id, productName, description, price, stockStatus, imgPath } =
         action.payload;
       const existingItem = state.cartItems.find((item) => item.id === id);
 
@@ -36,6 +40,7 @@ const shoppingCartSlice = createSlice({
           price,
           stockStatus,
           amount: 1,
+          imgPath,
         };
 
         return {

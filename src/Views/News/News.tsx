@@ -23,7 +23,7 @@ const News = () => {
   return (
     <StyledTextContainer>
       <h2>Våra senaste nyheter!</h2>
-      <p>Här är massa nyheter. Blablablabla.</p>
+      <p>Här är massa nyheter. Kolla in alla roliga produkter vi fått in.</p>
     </StyledTextContainer>
   );
 };

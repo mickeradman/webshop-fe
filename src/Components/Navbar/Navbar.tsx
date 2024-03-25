@@ -6,7 +6,7 @@ const StyledNavbar = styled.nav`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.color.bgPrimary};
-  border-bottom: solid 1px ${({ theme }) => theme.color.standardDelimiter};
+  border-bottom: solid 1px ${({ theme }) => theme.color.delimiterPrimary};
 `;
 
 const StyledList = styled.ul`

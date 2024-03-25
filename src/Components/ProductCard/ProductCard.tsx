@@ -7,9 +7,9 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import { useAppDispatch } from '../../GlobalState/useAppDispatch';
 import { addProduct, removeProduct } from '../../GlobalState/Cart/CartSlice';
 import { Product } from '../../Types/types';
-import { CartProps } from '../../GlobalState/Cart/CartSlice';
 import { IMG_EXTENSION } from '../../Utils/constants';
 import { CURRENCY } from '../../Utils/constants';
+import { getAmount } from '../../Utils/helperFunctions';
 
 const StyledListItem = styled.li`
   display: flex;
@@ -74,7 +74,7 @@ const StyledIconContainer = styled.div`
   display: flex;
   align-self: center;
   margin-right: 0.3rem;
-  border: 2px solid ${({ theme }) => theme.color.borderPrimary};
+  border: 1px solid ${({ theme }) => theme.color.borderPrimary};
   border-radius: 0.3rem;
   visibility: hidden;
 
@@ -106,8 +106,6 @@ const StyledQuantityBox = styled.div`
   color: ${({ theme }) => theme.color.textPrimary};
   font-size: 1.2rem;
   font-weight: bold;
-  border-left: 2px solid ${({ theme }) => theme.color.borderPrimary};
-  border-right: 2px solid ${({ theme }) => theme.color.borderPrimary};
 `;
 
 const StyledQuantity = styled.p`
@@ -131,10 +129,6 @@ const NotInStock = styled.h3`
   padding: 0.2rem 0.5rem;
   color: ${({ theme }) => theme.color.textPrimary};
 `;
-
-const getAmount = (id: string, cartItems: CartProps[]) => {
-  return cartItems.find((item) => item.id === id)?.amount || 0;
-};
 
 type ProductCardProps = {
   products: Product[];
@@ -164,9 +158,7 @@ const ProductCard = ({ products }: ProductCardProps) => {
             <StyledIconContainer
               className={`${
                 getAmount(product._id, cartItems) > 0 ? 'visible' : 'hidden'
-              } visible-on-hover ${
-                product.stockStatus === '0' && 'no-border'
-              }`}
+              } visible-on-hover ${product.stockStatus === '0' && 'no-border'}`}
             >
               {product.stockStatus === '0' ? (
                 <NotInStock>Slut i lager</NotInStock>
@@ -195,6 +187,7 @@ const ProductCard = ({ products }: ProductCardProps) => {
                           description: product.description,
                           price: product.price,
                           stockStatus: product.stockStatus,
+                          imgPath: product.imgPath,
                         })
                       )
                     }

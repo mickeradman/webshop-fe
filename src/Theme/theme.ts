@@ -1,4 +1,4 @@
-import { Theme, Sizes } from '../Types/styles';
+import { Theme, Sizes } from '../Types/types';
 
 const lightMode: Theme = {
   color: {
@@ -20,7 +20,7 @@ const lightMode: Theme = {
     positiveGreenHover: '#94FD94',
     productCardBg: '#F6F6F6',
     productCardBgOnHover: '#E8E8E8',
-    standardDelimiter: '#5D5D5D',
+    delimiterPrimary: '#5D5D5D',
     textPrimary: '#000000 ',
     textSecondary: '#FFFFFF',
   },
@@ -46,7 +46,7 @@ const darkMode: Theme = {
     positiveGreenHover: '#94FD94',
     productCardBg: '#181818',
     productCardBgOnHover: '#242424',
-    standardDelimiter: '#5D5D5D',
+    delimiterPrimary: '#5D5D5D',
     textPrimary: '#FFFFFF',
     textSecondary: '#000000',
   },
