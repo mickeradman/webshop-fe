@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export type CartProps = {
   id: string;
   productName: string;
-  amount: number;
+  qty: number;
   description: string;
   price: number;
   stockStatus: string;
@@ -18,14 +18,14 @@ const shoppingCartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addProduct: (state, action) => {
+    increaseProductQty: (state, action) => {
       const { id, productName, description, price, stockStatus, imgPath } =
         action.payload;
       const existingItem = state.cartItems.find((item) => item.id === id);
 
       if (existingItem) {
         const updatedCartItems = state.cartItems.map((item) =>
-          item.id === id ? { ...item, amount: item.amount + 1 } : item
+          item.id === id ? { ...item, qty: item.qty + 1 } : item
         );
 
         return {
@@ -39,7 +39,7 @@ const shoppingCartSlice = createSlice({
           description,
           price,
           stockStatus,
-          amount: 1,
+          qty: 1,
           imgPath,
         };
 
@@ -49,27 +49,24 @@ const shoppingCartSlice = createSlice({
         };
       }
     },
-    removeProduct: (state, action) => {
+    decreaseProductQty: (state, action) => {
       const { id } = action.payload;
       const updatedCartItems = state.cartItems.map((item) => {
         if (item.id === id) {
-          return { ...item, amount: Math.max(0, item.amount - 1) };
+          return { ...item, qty: Math.max(0, item.qty - 1) };
         }
         return item;
       });
 
-      const filteredCartItems = updatedCartItems.filter(
-        (item) => item.amount > 0
-      );
-
       return {
         ...state,
-        cartItems: filteredCartItems,
+        cartItems: updatedCartItems.filter((item) => item.qty > 0),
       };
     },
   },
 });
 
-export const { addProduct, removeProduct } = shoppingCartSlice.actions;
+export const { increaseProductQty, decreaseProductQty } =
+  shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;

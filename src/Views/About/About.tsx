@@ -19,7 +19,7 @@ const About = () => {
   return (
     <StyledGridContainer>
       <h2>Om oss</h2>
-      <p>Oss och oss... Detta är en sida skapad av mig. Men det låter mer fancy om företaget verkar större än det i själva verket är.</p>
+      <p>Vi är ett företag som sysslar med lite allt möjligt.</p>
     </StyledGridContainer>
   );
 };

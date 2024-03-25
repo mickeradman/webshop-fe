@@ -21,6 +21,7 @@ export const TopGridContainer = styled.div`
 export const AddRemoveIconsContainer = styled.div`
   display: flex;
   align-self: center;
+  align-items: center;
   margin-right: 0.3rem;
   border: 1px solid ${({ theme }) => theme.color.borderPrimary};
   border-radius: 0.3rem;
@@ -32,18 +33,17 @@ export const AddRemoveIconsContainer = styled.div`
 
   &.no-border {
     border: none;
-    color: ${({ theme }) => theme.color.negativeRed};
   }
 `;
 
 export const StyledRemoveIcon = styled(RemoveRoundedIcon)`
-  width: 2rem !important;
-  height: 2rem !important;
-  color: ${({ theme }) => theme.color.negativeRed};
+  /* width: 2rem !important;
+  height: 2rem !important; */
+  background-color: ${({ theme }) => theme.color.positiveGreen};
+  border-radius: 0.3rem 0 0 0.3rem;
 
   &:hover {
     cursor: pointer;
-    color: ${({ theme }) => theme.color.negativeRedHover};
   }
 `;
 
@@ -56,18 +56,18 @@ export const QuantityContainer = styled.div`
   font-weight: bold;
 `;
 
-export const Quantity = styled.p`
+export const Quantity = styled.div`
   margin: 0;
-  padding: 0 0.5rem;
+  padding: 0 0.75rem;
 `;
 
 export const StyledAddIcon = styled(AddRoundedIcon)`
-  width: 2rem !important;
-  height: 2rem !important;
-  color: ${({ theme }) => theme.color.positiveGreen};
+  /* width: 2rem !important;
+  height: 2rem !important; */
+  background-color: ${({ theme }) => theme.color.positiveGreen};
+  border-radius: 0 0.3rem 0.3rem 0;
 
   &:hover {
     cursor: pointer;
-    color: ${({ theme }) => theme.color.positiveGreenHover};
   }
 `;

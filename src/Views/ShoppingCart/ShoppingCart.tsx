@@ -1,12 +1,15 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../GlobalState/store';
 
 import { useAppDispatch } from '../../GlobalState/useAppDispatch';
-import { addProduct, removeProduct } from '../../GlobalState/Cart/CartSlice';
+import {
+  increaseProductQty,
+  decreaseProductQty,
+} from '../../GlobalState/Cart/CartSlice';
 import {
   TopGridContainer,
   AddRemoveIconsContainer,
@@ -17,7 +20,7 @@ import {
 } from '../../Styles/styles';
 import { IMG_EXTENSION } from '../../Utils/constants';
 import { CURRENCY } from '../../Utils/constants';
-import { getAmount } from '../../Utils/helperFunctions';
+import { getQty } from '../../Utils/helperFunctions';
 
 const CartOverlay = styled.section`
   position: fixed;
@@ -42,7 +45,7 @@ const CartContainer = styled.div`
   color: ${({ theme }) => theme.color.textPrimary};
   background-color: ${({ theme }) => theme.color.modalBg};
   border: 1px solid ${({ theme }) => theme.color.borderPrimary};
-  opacity: 0.98;
+  opacity: 0.99;
 
   @media screen and (max-width: 700px) {
     width: 100%;
@@ -133,7 +136,7 @@ const ProductListItem = styled.li`
   align-items: center;
   justify-items: left;
   list-style: none;
-  border-bottom: 1px solid ${({ theme }) => theme.color.delimiterPrimary};
+  border-bottom: 1px solid ${({ theme }) => theme.color.delimiterSecondary};
   padding: 1rem 0;
 
   p {
@@ -174,11 +177,10 @@ type ShoppingCartProps = {
 const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
   const dispatch = useAppDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+
   if (!isOpen) return null;
 
   const columnTitles = ['', 'Produkt', 'Pris', 'Antal'];
-
-  console.log(cartItems);
 
   return ReactDOM.createPortal(
     <CartOverlay>
@@ -208,34 +210,17 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
                     />
                     <p>{product.productName}</p>
                     <ProductPrice>
-                      {product.price * getAmount(product.id, cartItems)} {CURRENCY}
+                      {getQty(product.id, cartItems) * product.price} {CURRENCY}
                     </ProductPrice>
-                    <AddRemoveIconsContainer className='visible'>
+                    <AddRemoveIconsContainer className='visible no-border'>
                       <StyledRemoveIcon
-                        onClick={() =>
-                          dispatch(
-                            removeProduct({
-                              id: product.id,
-                            })
-                          )
-                        }
+                        onClick={() => dispatch(decreaseProductQty(product))}
                       />
                       <QuantityContainer>
-                        <Quantity>{getAmount(product.id, cartItems)}</Quantity>
+                        <Quantity>{getQty(product.id, cartItems)}</Quantity>
                       </QuantityContainer>
                       <StyledAddIcon
-                        onClick={() =>
-                          dispatch(
-                            addProduct({
-                              id: product.id,
-                              productName: product.productName,
-                              description: product.description,
-                              price: product.price,
-                              stockStatus: product.stockStatus,
-                              imgPath: product.imgPath,
-                            })
-                          )
-                        }
+                        onClick={() => dispatch(increaseProductQty(product))}
                       />
                     </AddRemoveIconsContainer>
                   </ProductListItem>

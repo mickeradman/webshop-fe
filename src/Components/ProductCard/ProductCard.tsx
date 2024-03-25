@@ -5,11 +5,21 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
 import { useAppDispatch } from '../../GlobalState/useAppDispatch';
-import { addProduct, removeProduct } from '../../GlobalState/Cart/CartSlice';
+import {
+  increaseProductQty,
+  decreaseProductQty,
+} from '../../GlobalState/Cart/CartSlice';
 import { Product } from '../../Types/types';
 import { IMG_EXTENSION } from '../../Utils/constants';
 import { CURRENCY } from '../../Utils/constants';
-import { getAmount } from '../../Utils/helperFunctions';
+import { getQty } from '../../Utils/helperFunctions';
+import {
+  AddRemoveIconsContainer,
+  StyledRemoveIcon,
+  StyledAddIcon,
+  QuantityContainer,
+  Quantity,
+} from '../../Styles/styles';
 
 const StyledListItem = styled.li`
   display: flex;
@@ -70,60 +80,6 @@ const StyledListPrice = styled.p`
   color: ${({ theme }) => theme.color.textPrimary};
 `;
 
-const StyledIconContainer = styled.div`
-  display: flex;
-  align-self: center;
-  margin-right: 0.3rem;
-  border: 1px solid ${({ theme }) => theme.color.borderPrimary};
-  border-radius: 0.3rem;
-  visibility: hidden;
-
-  &.visible {
-    visibility: visible;
-  }
-
-  &.no-border {
-    border: none;
-    color: ${({ theme }) => theme.color.negativeRed};
-  }
-`;
-
-const StyledRemoveIcon = styled(RemoveRoundedIcon)`
-  width: 2rem !important;
-  height: 2rem !important;
-  color: ${({ theme }) => theme.color.negativeRed};
-
-  &:hover {
-    cursor: pointer;
-    color: ${({ theme }) => theme.color.negativeRedHover};
-  }
-`;
-
-const StyledQuantityBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.color.textPrimary};
-  font-size: 1.2rem;
-  font-weight: bold;
-`;
-
-const StyledQuantity = styled.p`
-  margin: 0;
-  padding: 0 0.5rem;
-`;
-
-const StyledAddIcon = styled(AddRoundedIcon)`
-  width: 2rem !important;
-  height: 2rem !important;
-  color: ${({ theme }) => theme.color.positiveGreen};
-
-  &:hover {
-    cursor: pointer;
-    color: ${({ theme }) => theme.color.positiveGreenHover};
-  }
-`;
-
 const NotInStock = styled.h3`
   margin: 0;
   padding: 0.2rem 0.5rem;
@@ -155,10 +111,10 @@ const ProductCard = ({ products }: ProductCardProps) => {
                   : 'Ej prissatt ännu'}
               </StyledListPrice>
             </StyledTitlePriceContainer>
-            <StyledIconContainer
+            <AddRemoveIconsContainer
               className={`${
-                getAmount(product._id, cartItems) > 0 ? 'visible' : 'hidden'
-              } visible-on-hover ${product.stockStatus === '0' && 'no-border'}`}
+                getQty(product._id, cartItems) > 0 ? 'visible' : 'hidden'
+              } visible-on-hover no-border ${product.stockStatus === '0' && 'no-border'}`}
             >
               {product.stockStatus === '0' ? (
                 <NotInStock>Slut i lager</NotInStock>
@@ -167,21 +123,19 @@ const ProductCard = ({ products }: ProductCardProps) => {
                   <StyledRemoveIcon
                     onClick={() =>
                       dispatch(
-                        removeProduct({
+                        decreaseProductQty({
                           id: product._id,
                         })
                       )
                     }
                   />
-                  <StyledQuantityBox>
-                    <StyledQuantity>
-                      {getAmount(product._id, cartItems)}
-                    </StyledQuantity>
-                  </StyledQuantityBox>
+                  <QuantityContainer>
+                    <Quantity>{getQty(product._id, cartItems)}</Quantity>
+                  </QuantityContainer>
                   <StyledAddIcon
                     onClick={() =>
                       dispatch(
-                        addProduct({
+                        increaseProductQty({
                           id: product._id,
                           productName: product.productName,
                           description: product.description,
@@ -194,7 +148,7 @@ const ProductCard = ({ products }: ProductCardProps) => {
                   />
                 </>
               )}
-            </StyledIconContainer>
+            </AddRemoveIconsContainer>
           </StyledBottomContainer>
         </StyledListItem>
       ))}

@@ -19,6 +19,7 @@ export type Theme = {
     productCardBg: string;
     productCardBgOnHover: string;
     delimiterPrimary: string;
+    delimiterSecondary: string;
     textPrimary: string;
     textSecondary: string;
   };

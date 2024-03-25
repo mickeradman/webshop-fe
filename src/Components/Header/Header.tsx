@@ -81,7 +81,7 @@ const Header = (props: HeaderProps) => {
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
 
   const articleCount = cartItems.reduce((acc, item) => {
-    return acc + item.amount;
+    return acc + item.qty;
   }, 0);
 
   return (
