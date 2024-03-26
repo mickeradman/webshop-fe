@@ -1,9 +1,39 @@
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
+  height: 100vh;
+  box-sizing: border-box;
   margin: 0;
-  min-height: 80vh;
 }
 
 #root {
+  max-width: 1440px;
   height: 100%;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+p {
+  font-size: 1rem;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
